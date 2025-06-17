@@ -1,0 +1,11 @@
+2025-06-17T06:59:19.967Z [INFO]: GET /
+2025-06-17T18:03:35.716Z [INFO]: POST /api/auth/register
+2025-06-17T18:03:35.725Z [ERROR]: POST /api/auth/register - Cannot destructure property 'username' of 'req.body' as it is undefined.
+2025-06-17T18:05:29.432Z [INFO]: POST /
+2025-06-17T18:05:37.003Z [INFO]: GET /
+2025-06-17T18:05:42.019Z [INFO]: POST /
+2025-06-17T18:05:50.588Z [INFO]: POST /api/auth/register
+2025-06-17T18:05:50.591Z [ERROR]: POST /api/auth/register - Cannot destructure property 'username' of 'req.body' as it is undefined.
+2025-06-17T18:06:28.326Z [INFO]: POST /api/auth/register
+2025-06-17T18:06:28.328Z [ERROR]: POST /api/auth/register - All fields are required
+2025-06-17T18:06:59.843Z [INFO]: POST /api/auth/register
