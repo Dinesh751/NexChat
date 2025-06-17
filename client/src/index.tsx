@@ -3,13 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ThemeProvider } from './context/ThemeProvider';
+import { NotificationProvider } from './context/NotificationProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider>
+      <NotificationProvider>
+        <App />
+      </NotificationProvider>
+    </ThemeProvider>
+    
   </React.StrictMode>,
 );
 
