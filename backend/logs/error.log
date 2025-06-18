@@ -1,3 +1,17 @@
 2025-06-17T18:03:35.725Z [ERROR]: POST /api/auth/register - Cannot destructure property 'username' of 'req.body' as it is undefined.
 2025-06-17T18:05:50.591Z [ERROR]: POST /api/auth/register - Cannot destructure property 'username' of 'req.body' as it is undefined.
 2025-06-17T18:06:28.328Z [ERROR]: POST /api/auth/register - All fields are required
+2025-06-18T06:43:29.939Z [ERROR]: POST /api/auth/register - Cannot destructure property 'username' of 'req.body' as it is undefined.
+2025-06-18T06:46:59.402Z [ERROR]: POST /api/auth/register - Cannot destructure property 'username' of 'req.body' as it is undefined.
+2025-06-18T06:47:04.037Z [ERROR]: POST /api/auth/register - Cannot destructure property 'username' of 'req.body' as it is undefined.
+2025-06-18T07:03:21.969Z [ERROR]: POST /api/auth/register - Unexpected field
+2025-06-18T07:18:24.661Z [ERROR]: POST /api/auth/register - Cannot read properties of undefined (reading '0')
+2025-06-18T07:18:40.582Z [ERROR]: POST /api/auth/register - Cannot read properties of undefined (reading '0')
+2025-06-18T07:20:20.006Z [ERROR]: POST /api/auth/register - profilePic is not defined
+2025-06-18T16:29:05.760Z [ERROR]: POST /api/v1/auth/refresh-token - Cannot read properties of undefined (reading 'refreshToken')
+2025-06-18T16:30:20.291Z [ERROR]: POST /api/v1/auth/refresh-token - Cannot read properties of undefined (reading 'refreshToken')
+2025-06-18T16:31:18.856Z [ERROR]: POST /api/v1/auth/refresh-token - Cannot read properties of undefined (reading 'refreshToken')
+2025-06-18T16:32:13.509Z [ERROR]: POST /api/v1/auth/refresh-token - Cannot read properties of undefined (reading 'refreshToken')
+2025-06-18T16:33:01.744Z [ERROR]: POST /api/v1/auth/refresh-token - Cannot read properties of undefined (reading 'refreshToken')
+2025-06-18T16:33:20.871Z [ERROR]: POST /api/v1/auth/refresh-token - Cannot read properties of undefined (reading 'refreshToken')
+2025-06-18T16:33:40.025Z [ERROR]: POST /api/v1/auth/refresh-token - Cannot read properties of undefined (reading 'refreshToken')

@@ -3,18 +3,22 @@ import {
   Avatar,
   Box,
   Button,
-  Link,
   Paper,
   Stack,
   TextField,
   Typography,
   IconButton,
   InputAdornment,
+  CircularProgress,
 } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNotification } from '../context/NotificationProvider';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../context/AuthProvider';
+import api from '../api/axios';
 
 const Login: React.FC = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -22,6 +26,8 @@ const Login: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { notify } = useNotification();
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,24 +42,21 @@ const Login: React.FC = () => {
     setLoading(true);
     setErrorMsg(null);
     try {
-      // Example API call (replace with your endpoint)
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        setErrorMsg(error.message || 'Incorrect password..!');
-        notify(error.message || 'Login failed', 'error');
-      } else {
-        notify('Login successful!', 'success');
-        // Redirect or further logic here
-      }
-    } catch {
-      setErrorMsg('Network error. Please try again.');
-      notify('Network error. Please try again.', 'error');
+      const res = await api.post(`/auth/login`, form);
+      if (res.data.success) {
+          const { user, token, message } = res.data;
+          login(user, token);
+          notify(message, 'success');
+          navigate('/home');
+        } else {
+          notify(res.data.message || 'Login failed', 'error');
+        }
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        'Incorrect password..!';
+      setErrorMsg(message);
+      notify(message, 'error');
     } finally {
       setLoading(false);
     }
@@ -98,7 +101,6 @@ const Login: React.FC = () => {
             flexShrink: 0,
           }}
         >
-          {/* Replace with your SVG or illustration */}
           <Box
             sx={{
               width: { xs: 70, sm: 120 },
@@ -204,15 +206,22 @@ const Login: React.FC = () => {
               sx={{ mt: 1, borderRadius: 2, fontWeight: 600, fontSize: 15, py: 1 }}
               type="submit"
               disabled={loading}
+              startIcon={loading ? <CircularProgress size={18} /> : null}
             >
               Login
             </Button>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1, fontSize: 13 }}>
               Don&apos;t have an account?{' '}
-              <Link href="/register" underline="hover" fontSize={13}>
+              <Button
+                component={RouterLink}
+                to="/register"
+                variant="text"
+                color="primary"
+                sx={{ fontSize: 13, textTransform: 'none', p: 0, minWidth: 0 }}
+              >
                 Register
-              </Link>
-              </Typography>
+              </Button>
+            </Typography>
           </Box>
         </Box>
       </Paper>
