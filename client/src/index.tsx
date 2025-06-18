@@ -5,17 +5,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from './context/ThemeProvider';
 import { NotificationProvider } from './context/NotificationProvider';
+import { AuthProvider } from './context/AuthProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
   <React.StrictMode>
+    <AuthProvider>
     <ThemeProvider>
       <NotificationProvider>
         <App />
       </NotificationProvider>
     </ThemeProvider>
+    </AuthProvider>
     
   </React.StrictMode>,
 );

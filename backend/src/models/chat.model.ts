@@ -19,10 +19,14 @@ interface IChat extends Document {
 
 // Message Schema
 const MessageSchema = new Schema<IMessage>({
-  senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true    },
+  senderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   text: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
-  readBy: [{ type: mongoose.Types.ObjectId, ref: 'User' }]
+  readBy: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
 });
 
 // Chat Schema
@@ -31,7 +35,7 @@ const ChatSchema = new Schema<IChat>({
   users: [{ type: mongoose.Types.ObjectId, ref: 'User', required: true }],
   messages: [MessageSchema], // Embedded messages
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const Chat = mongoose.model<IChat>('Chat', ChatSchema);

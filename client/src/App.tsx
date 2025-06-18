@@ -2,6 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import  Register  from './components/RegistrationForm';
 import Login from './components/LoginForm';
+import { UserRoutes } from './guardRoutes/UserRoutes';
+import HomePage from './pages/HomePage';
+import PageNotFound from './components/PageNotFound';
 
 function App() {
   
@@ -9,10 +12,12 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Register/>} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/contact" element={<h1>Contact Page</h1>} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/" element={<Login/>} />
+          <Route path="/register" element={<Register/>} /> 
+          <Route element={<UserRoutes />}>
+            <Route path="/home" element={<HomePage />} />
+          </Route>
+          <Route path="*" element={<PageNotFound/>} />
         </Routes>
       </Router>
     </>

@@ -15,6 +15,10 @@ import {
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { useNotification } from '../context/NotificationProvider';
+import axios from 'axios';
+import { useAuth } from '../context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import api from '../api/axios';
 
 type FormState = {
   username: string;
@@ -34,6 +38,8 @@ const Register: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const { notify } = useNotification();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
@@ -44,44 +50,54 @@ const Register: React.FC = () => {
     }
   };
 
-  const registerUser = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (form.password !== form.confirmPassword) {
-      notify('Passwords do not match', 'error');
-      return;
-    }
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append('username', form.username);
-      formData.append('email', form.email);
-      formData.append('password', form.password);
-      if (form.profilePic) formData.append('profilePic', form.profilePic);
 
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        body: formData,
-      });
+const registerUser = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  if (form.password !== form.confirmPassword) {
+    notify('Passwords do not match', 'error');
+    return;
+  }
+  setLoading(true);
+  try {
+    const formData = new FormData();
+    formData.append('username', form.username);
+    formData.append('email', form.email);
+    formData.append('password', form.password);
+    if (form.profilePic) formData.append('profilePic', form.profilePic);
 
-      if (!res.ok) {
-        const error = await res.json();
-        notify(error.message || 'Registration failed', 'error');
-      } else {
-        notify('Registration successful!', 'success');
+    const res = await api.post(`/auth/register`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    
+    if(res.data?.success === true){
+        const { user, token } = res.data;
+        login(user, token);
+        setLoading(false);
+        notify(res.data.message, 'success');
+        navigate('/home');
         setForm({
-          username: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-          profilePic: null,
-        });
-      }
-    } catch {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      profilePic: null,
+    });
+
+    }else {
+          notify(res.data.message || 'Registration failed', 'error');
+          setLoading(false);
+        }
+   
+  } catch (error: any) {
+    if (error.response && error.response.data && error.response.data.message) {
+      notify(error.response.data.message, 'error');
+    } else {
       notify('Network error. Please try again.', 'error');
-    } finally {
-      setLoading(false);
     }
-  };
+  }finally {
+        setLoading(false);
+      }
+}
 
   return (
     <Box
