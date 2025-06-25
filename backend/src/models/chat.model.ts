@@ -11,6 +11,10 @@ interface IMessage extends Document {
 // Define Chat Interface
 interface IChat extends Document {
   chatName: string;
+  profilePic: {
+    data: Buffer;
+    contentType: string;
+  };
   users: mongoose.Types.ObjectId[];
   messages: IMessage[];
   createdAt: Date;
@@ -30,10 +34,15 @@ const MessageSchema = new Schema<IMessage>({
 });
 
 // Chat Schema
+// In your chat.model.ts
 const ChatSchema = new Schema<IChat>({
-  chatName: { type: String, required: true },
+  chatName: { type: String, default: null },
+  profilePic: {
+    data: Buffer,
+    contentType: String,
+  },
   users: [{ type: mongoose.Types.ObjectId, ref: 'User', required: true }],
-  messages: [MessageSchema], // Embedded messages
+  messages: [MessageSchema],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
