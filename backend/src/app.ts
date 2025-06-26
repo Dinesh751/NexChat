@@ -3,6 +3,7 @@ import { requestLogger } from './middlewares/logger.middleware';
 import { errorLogger } from './middlewares/errorLogger.middleware';
 import { connectDB } from './config/connectToDB';
 import authRoutes from './routes/auth.routes';
+import chatRoutes from './routes/chat.routes';
 import { fileUploadMiddleware } from './middlewares/fileUpload.middleware';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -25,11 +26,12 @@ app.use(requestLogger);
 connectDB();
 
 app.use('/api/v1/auth',fileUploadMiddleware, authRoutes);
+app.use('/api/v1/chats',fileUploadMiddleware, chatRoutes);
+
 
 const PORT = process.env.SERVER_PORT || 8000;
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+
+
 
 // Error handling middleware
 app.use(errorLogger);
