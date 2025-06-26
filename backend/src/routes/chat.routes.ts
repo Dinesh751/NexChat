@@ -1,12 +1,12 @@
 import express from 'express';
-import { getConversation, postChat} from '../controllers/chat.controller';
+import { addUserToGroup, createGroup, getContactsAndGroups, getConversation, postChat} from '../controllers/chat.controller';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.status(200).json({ message: 'Chat route is working!' });
-});
-router.post('/send-message', postChat );
-router.get('/get-chat/:chatId', getConversation);
+router.post('/create-group', createGroup );
+router.post('/groups/:groupId/adduser', addUserToGroup );
+router.get('/contacts-and-groups/:userId', getContactsAndGroups );
+router.post('/message', postChat );
+router.get('/conversations', getConversation);
 
 export default router;

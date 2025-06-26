@@ -26,12 +26,12 @@ app.use(requestLogger);
 connectDB();
 
 app.use('/api/v1/auth',fileUploadMiddleware, authRoutes);
-app.use('/api/v1/chat',fileUploadMiddleware, chatRoutes);
+app.use('/api/v1/chats',fileUploadMiddleware, chatRoutes);
+
 
 const PORT = process.env.SERVER_PORT || 8000;
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+
+
 
 // Error handling middleware
 app.use(errorLogger);

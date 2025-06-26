@@ -11,7 +11,9 @@ import User from '../models/user.model';
 
 export const createGroup = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { chatName, users, profilePic } = req.body;
+    let { chatName, users, profilePic } = req.body;
+       users = JSON.parse(users); // Ensure users is an array
+    console.log('Creating group with:', { chatName, users, profilePic });
 
     // Validation
     if (
@@ -51,7 +53,8 @@ export const createGroup = async (req: Request, res: Response): Promise<any> => 
 
 export const addUserToGroup = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { groupId, userId } = req.body;
+    const { groupId } = req.params; // groupId from URL param
+    const { userId } = req.body;    // userId from body
 
     if (!groupId || !userId) {
       return res.status(400).json({ error: 'groupId and userId are required.' });
@@ -64,7 +67,7 @@ export const addUserToGroup = async (req: Request, res: Response): Promise<any> 
     }
 
     // Check if user is already in the group
-    if (group.users.includes(userId)) {
+    if (group.users.some(u => u.toString() === userId)) {
       return res.status(409).json({ error: 'User already in the group.' });
     }
 
@@ -81,19 +84,19 @@ export const addUserToGroup = async (req: Request, res: Response): Promise<any> 
 
 
 // GET /api/chats/contacts-and-groups/:userId
-export const getContactsAndGroups = async (req: Request, res: Response) => {
+export const getContactsAndGroups = async (req: Request, res: Response): Promise<any> => {
   try {
     const { userId } = req.params;
 
     // Fetch all users except the current user
-    const users = await User.find({ _id: { $ne: userId } })
+    const users = await User.find({ _id: { $ne: userId } }).select('-password -email -profilePic -refreshToken');
 
     // Fetch all group chats the user is part of (users.length > 2 and chatName not null)
     const groups = await Chat.find({
       users: userId,
       chatName: { $ne: null },
       'users.2': { $exists: true }
-    })
+    }).select('-profilePic');
 
     return res.status(200).json({ users, groups });
   } catch (err) {
@@ -101,6 +104,7 @@ export const getContactsAndGroups = async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 export const postChat = async (req: Request, res: Response): Promise<any> => {
    try {
